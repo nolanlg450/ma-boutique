@@ -2,15 +2,22 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NovaShop</title>
+    <title>NovaShop - AirPods</title>
     <link rel="stylesheet" href="styles.css">
     <!-- PayPal SDK -->
     <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
 </head>
 <body>
+
     <header>
         <h1>NovaShop</h1>
-        <p>Votre boutique en ligne de produits exclusifs</p>
+        <p>Votre boutique d’AirPods</p>
+        <div class="login">
+            <input type="text" id="username" placeholder="Nom d'utilisateur">
+            <input type="password" id="password" placeholder="Mot de passe">
+            <button onclick="login()">Se connecter</button>
+            <p id="login-message"></p>
+        </div>
     </header>
 
     <main>
@@ -27,5 +34,6 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
