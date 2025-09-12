@@ -1,8 +1,9 @@
 const PRODUCTS = [
-    {id: 1, name: "Montre Luxe", price: 5999, img: "https://images.unsplash.com/photo-1518545100930-8a57aaaf6f5a?auto=format&fit=crop&w=220&q=80"},
-    {id: 2, name: "Sac Élégant", price: 7499, img: "https://images.unsplash.com/photo-1582816784003-409fe03c2098?auto=format&fit=crop&w=220&q=80"},
-    {id: 3, name: "Casque Audio", price: 8999, img: "https://images.unsplash.com/photo-1580894894513-0f15f5d3b12e?auto=format&fit=crop&w=220&q=80"}
+    {id: 1, name: "Montre Luxe", price: 5999, img: "https://via.placeholder.com/220x150?text=Montre+Luxe"},
+    {id: 2, name: "Sac Élégant", price: 7499, img: "https://via.placeholder.com/220x150?text=Sac+Élégant"},
+    {id: 3, name: "Casque Audio", price: 8999, img: "https://via.placeholder.com/220x150?text=Casque+Audio"}
 ];
+
 
 let cart = [];
 
