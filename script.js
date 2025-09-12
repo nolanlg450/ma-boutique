@@ -1,7 +1,7 @@
 const PRODUCTS = [
-    {id: 1, name: "Produit A", price: 1999},
-    {id: 2, name: "Produit B", price: 2999},
-    {id: 3, name: "Produit C", price: 3999}
+    {id: 1, name: "Montre Luxe", price: 5999, img: "https://via.placeholder.com/220x150?text=Montre+Luxe"},
+    {id: 2, name: "Sac Élégant", price: 7499, img: "https://via.placeholder.com/220x150?text=Sac+Élégant"},
+    {id: 3, name: "Casque Audio", price: 8999, img: "https://via.placeholder.com/220x150?text=Casque+Audio"}
 ];
 
 let cart = [];
@@ -17,6 +17,7 @@ function renderProducts() {
         const div = document.createElement("div");
         div.className = "product";
         div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
             <h3>${p.name}</h3>
             <p>Prix : ${centsToEuroString(p.price)}</p>
             <button onclick="addToCart(${p.id})">Ajouter au panier</button>
@@ -46,6 +47,11 @@ function renderCart() {
 function renderPayPalButton(totalCents) {
     const totalEuros = (totalCents / 100).toFixed(2);
 
+    if (totalCents === 0) {
+        document.getElementById("paypal-button-container").innerHTML = "";
+        return;
+    }
+
     paypal.Buttons({
         createOrder: function(data, actions) {
             return actions.order.create({
@@ -66,3 +72,4 @@ function renderPayPalButton(totalCents) {
 
 // Initialisation
 renderProducts();
+
