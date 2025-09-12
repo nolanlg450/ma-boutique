@@ -20,6 +20,27 @@ header h1 {
 header p {
     font-size: 1.2rem;
     color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.login input {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.login button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+}
+
+.login button:hover {
+    background-color: #2980b9;
 }
 
 #products {
@@ -35,6 +56,7 @@ header p {
     padding: 15px;
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
 }
 
 .product:hover {
@@ -48,6 +70,11 @@ header p {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.product img:hover {
+    transform: scale(1.05);
 }
 
 .product h3 {
@@ -92,3 +119,4 @@ button:hover {
 #cart-items p {
     margin-bottom: 10px;
 }
+
