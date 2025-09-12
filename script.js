@@ -1,14 +1,55 @@
+const PRODUCTS = [
+    {id: 1, name: "Montre Luxe", price: 5999, img: "https://images.unsplash.com/photo-1518545100930-8a57aaaf6f5a?auto=format&fit=crop&w=220&q=80"},
+    {id: 2, name: "Sac Élégant", price: 7499, img: "https://images.unsplash.com/photo-1582816784003-409fe03c2098?auto=format&fit=crop&w=220&q=80"},
+    {id: 3, name: "Casque Audio", price: 8999, img: "https://images.unsplash.com/photo-1580894894513-0f15f5d3b12e?auto=format&fit=crop&w=220&q=80"}
+];
+
+let cart = [];
+
+function centsToEuroString(cents) {
+    return (cents / 100).toFixed(2) + " €";
+}
+
+function renderProducts() {
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+    PRODUCTS.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>Prix : ${centsToEuroString(p.price)}</p>
+            <button onclick="addToCart(${p.id})">Ajouter au panier</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addToCart(id) {
+    const product = PRODUCTS.find(p => p.id === id);
+    cart.push(product);
+    renderCart();
+}
+
+function renderCart() {
+    const container = document.getElementById("cart-items");
+    container.innerHTML = "";
+    let total = 0;
+    cart.forEach((p, index) => {
+        total += p.price;
+        container.innerHTML += `<p>${p.name} - ${centsToEuroString(p.price)}</p>`;
+    });
+    document.getElementById("order-total").textContent = centsToEuroString(total);
+    renderPayPalButton(total);
+}
+
 function renderPayPalButton(totalCents) {
     const container = document.getElementById("paypal-button-container");
-    container.innerHTML = ""; // Vide le conteneur avant de redessiner
+    container.innerHTML = "";
 
     paypal.Buttons({
-        style: {
-            layout: 'vertical',
-            color: 'blue',
-            shape: 'rect',
-            label: 'paypal'
-        },
+        style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
         createOrder: function(data, actions) {
             if (totalCents === 0) {
                 alert("Votre panier est vide !");
@@ -16,9 +57,7 @@ function renderPayPalButton(totalCents) {
             }
             const totalEuros = (totalCents / 100).toFixed(2);
             return actions.order.create({
-                purchase_units: [{
-                    amount: { value: totalEuros }
-                }]
+                purchase_units: [{ amount: { value: totalEuros } }]
             });
         },
         onApprove: function(data, actions) {
@@ -30,3 +69,6 @@ function renderPayPalButton(totalCents) {
         }
     }).render('#paypal-button-container');
 }
+
+// Initialisation
+renderProducts();
