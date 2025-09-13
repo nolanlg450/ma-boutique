@@ -1,39 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>NovaShop - AirPods</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- PayPal SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NovaShop — AirPods</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- PayPal SDK: Remplace TON_CLIENT_ID par ton Client ID -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand">NovaShop</div>
+    <nav>
+      <button id="btn-view-store" class="nav-btn">Boutique</button>
+      <button id="btn-view-cart" class="nav-btn">Panier (<span id="cart-count">0</span>)</button>
+      <span id="user-area"></span>
+    </nav>
+  </header>
 
-    <header>
-        <h1>NovaShop</h1>
-        <p>Votre boutique d’AirPods</p>
-        <div class="login">
-            <input type="text" id="username" placeholder="Nom d'utilisateur">
-            <input type="password" id="password" placeholder="Mot de passe">
-            <button onclick="login()">Se connecter</button>
-            <p id="login-message"></p>
-        </div>
-    </header>
+  <main class="container">
+    <!-- Auth panels -->
+    <section id="auth-section" class="card auth-card">
+      <div class="auth-tabs">
+        <button id="show-login" class="tab active">Connexion</button>
+        <button id="show-register" class="tab">Créer un compte</button>
+      </div>
 
-    <main>
-        <div id="products"></div>
-    </main>
+      <div id="login-panel" class="auth-panel">
+        <input id="login-email" type="email" placeholder="Email" />
+        <input id="login-password" type="password" placeholder="Mot de passe" />
+        <button id="login-btn" class="primary">Se connecter</button>
+        <div id="login-msg" class="muted"></div>
+      </div>
 
-    <section id="checkout">
-        <h2>Panier</h2>
-        <div id="cart-items"></div>
-        <p>Total : <span id="order-total">0,00 €</span></p>
-        <div id="paypal-button-container"></div>
+      <div id="register-panel" class="auth-panel hidden">
+        <input id="reg-name" type="text" placeholder="Nom complet" />
+        <input id="reg-email" type="email" placeholder="Email" />
+        <input id="reg-password" type="password" placeholder="Mot de passe (min 4 caract.)" />
+        <button id="register-btn" class="primary">Créer un compte</button>
+        <div id="reg-msg" class="muted"></div>
+      </div>
     </section>
 
-    <script src="script.js"></script>
+    <!-- Products -->
+    <section id="store-section" class="grid"></section>
+
+    <!-- Cart / Checkout -->
+    <aside id="cart-section" class="card hidden">
+      <h3>Ton panier</h3>
+      <div id="cart-items"></div>
+      <div class="cart-summary">
+        <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
+        <div>TVA (20%): <strong id="tax">0,00 €</strong></div>
+        <div class="grand">Total: <strong id="total">0,00 €</strong></div>
+      </div>
+      <div id="paypal-button-container" style="margin-top:12px;"></div>
+      <div class="small muted" style="margin-top:8px;">Note: paiement via PayPal (client-side).</div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div>© NovaShop — Paiement de test. Pour production, ajoute un backend sécurisé.</div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
 
 
