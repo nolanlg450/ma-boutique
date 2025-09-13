@@ -6,7 +6,7 @@ const products = [
   { id: 2, name: "AirPods Pro 2", price: 55, image: "images/airpodspro2.jpg" }
 ];
 
-// Afficher produits
+// Affichage produits
 function loadProducts() {
   const list = document.getElementById("product-list");
   list.innerHTML = "";
@@ -22,7 +22,7 @@ function loadProducts() {
   });
 }
 
-// Zoom image simple
+// Zoom image
 function zoomImage(src) {
   const modal = document.createElement("div");
   modal.style.position="fixed";
@@ -42,7 +42,7 @@ function renderCart(){
   let total=0;
   cart.forEach((item,index)=>{
     const li=document.createElement("li");
-    li.innerHTML=`${item.name} - ${item.price} € <button onclick="removeFromCart(${index})" style="background:red;padding:0.2rem 0.5rem;border:none;color:white;border-radius:5px;">X</button>`;
+    li.innerHTML=`${item.name} - ${item.price} € <button onclick="removeFromCart(${index})">X</button>`;
     ul.appendChild(li);
     total+=item.price;
   });
@@ -56,19 +56,29 @@ function renderPayPalButton(total){
   if(total===0) return;
   paypal.Buttons({
     createOrder:(data,actions)=>actions.order.create({purchase_units:[{amount:{value:total.toFixed(2)}}]}),
-    onApprove:async(data,actions)=>{ const details=await actions.order.capture(); alert("Paiement réussi par "+details.payer.name.given_name); cart=[]; renderCart(); }
+    onApprove:async(data,actions)=>{
+      const details=await actions.order.capture();
+      alert("Paiement réussi par "+details.payer.name.given_name);
+      cart=[]; renderCart();
+    }
   }).render("#paypal-button-container");
 }
 
 // Auth simulé
 function showLogin(){ showAuth("Connexion","Se connecter",login); }
 function showRegister(){ showAuth("Créer un compte","S'inscrire",register); }
-function showAuth(title,btnText,callback){ document.getElementById("auth-title").textContent=title; document.getElementById("auth-submit").textContent=btnText; document.getElementById("auth-submit").onclick=callback; document.getElementById("auth-modal").style.display="flex"; }
+function showAuth(title,btnText,callback){
+  document.getElementById("auth-title").textContent=title;
+  document.getElementById("auth-submit").textContent=btnText;
+  document.getElementById("auth-submit").onclick=callback;
+  document.getElementById("auth-modal").style.display="flex";
+}
 function closeModal(){ document.getElementById("auth-modal").style.display="none"; }
 function login(){ const username=document.getElementById("auth-username").value; alert("Connexion simulée pour : "+username); closeModal(); }
 function register(){ const username=document.getElementById("auth-username").value; alert("Inscription simulée pour : "+username); closeModal(); }
 
-// Init
+// Initialisation
 loadProducts();
 renderCart();
+
 
