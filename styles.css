@@ -1,50 +1,289 @@
-:root{
-  --bg: linear-gradient(180deg,#eef6ff,#f7fbff);
-  --card:#ffffff;
-  --accent:#2f80ed;
-  --accent-dark:#1f63c7;
-  --muted:#6b7280;
-  --radius:12px;
+/* NovaShop - script.js
+   Remplace TON_CLIENT_ID dans index.html par ton Client ID PayPal (sandbox pour tester).
+*/
+
+/* Produits (prix en centimes) */
+const PRODUCTS = [
+  { id: "ap4", title: "AirPods 4", price_cents: 5000, img: "https://picsum.photos/seed/airpods4/600/400" },
+  { id: "appro2", title: "AirPods Pro 2", price_cents: 5500, img: "https://picsum.photos/seed/airpodspro2/600/400" }
+];
+
+/* Stockage local */
+const USERS_KEY = "novashop_users_v1";
+const SESSION_KEY = "novashop_session_v1";
+const ORDERS_KEY = "novashop_orders_v1";
+let cart = [];
+let currentUser = loadSession();
+
+/* ---------- DOM refs ---------- */
+const storeSection = document.getElementById("store-section");
+const cartSection = document.getElementById("cart-section");
+const cartCountSpan = document.getElementById("cart-count");
+const cartItemsDiv = document.getElementById("cart-items");
+const subtotalEl = document.getElementById("subtotal");
+const taxEl = document.getElementById("tax");
+const totalEl = document.getElementById("total");
+const userArea = document.getElementById("user-area");
+
+/* Auth elements */
+const showLoginBtn = document.getElementById("show-login");
+const showRegBtn = document.getElementById("show-register");
+const loginPanel = document.getElementById("login-panel");
+const registerPanel = document.getElementById("register-panel");
+const loginBtn = document.getElementById("login-btn");
+const registerBtn = document.getElementById("register-btn");
+const loginMsg = document.getElementById("login-msg");
+const regMsg = document.getElementById("reg-msg");
+
+/* Nav buttons */
+document.getElementById("btn-view-store").addEventListener("click", ()=> { storeSection.scrollIntoView({behavior:"smooth"}); });
+document.getElementById("btn-view-cart").addEventListener("click", ()=> { cartSection.classList.toggle("hidden"); cartSection.scrollIntoView({behavior:"smooth"}); });
+
+/* Auth tabs */
+showLoginBtn.addEventListener("click", ()=> { showLogin(); });
+showRegBtn.addEventListener("click", ()=> { showRegister(); });
+
+function showLogin(){ showLoginBtn.classList.add("active"); showRegBtn.classList.remove("active"); loginPanel.classList.remove("hidden"); registerPanel.classList.add("hidden"); }
+function showRegister(){ showRegBtn.classList.add("active"); showLoginBtn.classList.remove("active"); registerPanel.classList.remove("hidden"); loginPanel.classList.add("hidden"); }
+
+/* ---------- Auth functions (client-side, not secure for production) ---------- */
+function loadUsers(){
+  try{ return JSON.parse(localStorage.getItem(USERS_KEY)) || []; } catch(e){ return []; }
+}
+function saveUsers(users){ localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
+
+function loadSession(){
+  try{ return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e){ return null; }
+}
+function saveSession(user){ localStorage.setItem(SESSION_KEY, JSON.stringify(user)); currentUser = user; updateUserArea(); }
+
+function registerUser(){
+  const name = document.getElementById("reg-name").value.trim();
+  const email = document.getElementById("reg-email").value.trim().toLowerCase();
+  const password = document.getElementById("reg-password").value;
+
+  if(!name || !email || password.length < 4){
+    regMsg.textContent = "Remplis tous les champs (mot de passe ≥4 caractères).";
+    regMsg.style.color = "red"; return;
+  }
+
+  const users = loadUsers();
+  if(users.find(u => u.email === email)){
+    regMsg.textContent = "Un compte existe déjà pour cet email."; regMsg.style.color = "red"; return;
+  }
+  // Pour simplicité, on stocke password en clair localement (⚠️ pas sûr pour prod)
+  users.push({ name, email, password });
+  saveUsers(users);
+  regMsg.textContent = "Compte créé — connecte-toi."; regMsg.style.color = "green";
+  // auto switch to login
+  showLogin();
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-  background:var(--bg);color:#0f1724;
+function login(){
+  const email = document.getElementById("login-email").value.trim().toLowerCase();
+  const password = document.getElementById("login-password").value;
+  const users = loadUsers();
+  const user = users.find(u => u.email === email && u.password === password);
+  if(!user){
+    loginMsg.textContent = "Email ou mot de passe incorrect."; loginMsg.style.color = "red"; return;
+  }
+  saveSession({ name: user.name, email: user.email });
+  loginMsg.textContent = "Connecté !"; loginMsg.style.color = "green";
+  renderProducts();
+  renderCart();
 }
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(255,255,255,0.6);backdrop-filter: blur(6px);
-  border-bottom:1px solid rgba(15,23,36,0.05);
-}
-.brand{font-weight:700;font-size:20px}
-.nav-btn{margin-left:8px;padding:8px 12px;border-radius:8px;border:1px solid rgba(15,23,36,0.06);background:#fff;cursor:pointer}
-.container{max-width:1100px;margin:26px auto;padding:0 16px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-.card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 8px 30px rgba(15,23,36,0.06)}
-.auth-card{grid-column:1 / span 2;margin-bottom:6px}
-.hidden{display:none}
-.auth-tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{padding:8px 12px;border-radius:8px;border:1px solid rgba(15,23,36,0.06);background:#fff;cursor:pointer}
-.tab.active{background:var(--accent);color:#fff;border-color:transparent}
-.auth-panel input{display:block;width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e5e7eb}
-.primary{background:var(--accent);color:#fff;border:0;padding:10px 12px;border-radius:8px;cursor:pointer}
-.primary:hover{background:var(--accent-dark)}
-.muted{color:var(--muted);font-size:13px;margin-top:6px}
-.grid .product{
-  background:linear-gradient(180deg,#ffffff,#fbfdff);
-  border-radius:12px;padding:12px;text-align:center;box-shadow:0 12px 30px rgba(15,23,36,0.06);cursor:default;transition:transform .25s,box-shadow .25s;
-}
-.product:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(15,23,36,0.09)}
-.product img{width:100%;height:180px;object-fit:cover;border-radius:10px;transition:transform .35s}
-.product img:hover{transform:scale(1.04)}
-.product h4{margin:10px 0 6px;font-size:18px}
-.price{font-weight:700;color:#111;margin-bottom:8px}
-.small{font-size:13px;color:var(--muted)}
-.cart-summary{margin-top:12px;font-size:15px;color:var(--muted)}
-.grand{margin-top:8px;font-weight:700;color:#111}
-#cart-items p{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #eee}
-.qty-input{width:64px;padding:6px;border-radius:6px;border:1px solid #e5e7eb}
-.remove-btn{background:transparent;border:0;color:#d9534f;cursor:pointer}
-.footer{text-align:center;padding:24px;color:var(--muted);font-size:14px;margin-top:24px}
-#user-area{font-size:14px;color:var(--muted)}
 
+/* Logout */
+function logout(){
+  localStorage.removeItem(SESSION_KEY);
+  currentUser = null;
+  updateUserArea();
+  renderCart();
+}
+
+/* Update header user area */
+function updateUserArea(){
+  if(currentUser){
+    userArea.innerHTML = `Salut, <strong>${escapeHtml(currentUser.name)}</strong> • <button class="nav-btn" onclick="logout()">Déconnexion</button>`;
+  } else {
+    userArea.innerHTML = `<button class="nav-btn" onclick="showLogin()">Connexion / Inscription</button>`;
+  }
+}
+
+/* ---------- Store rendering ---------- */
+function renderProducts(){
+  storeSection.innerHTML = "";
+  PRODUCTS.forEach(p=>{
+    const card = document.createElement("article");
+    card.className = "product";
+    card.innerHTML = `
+      <img src="${p.img}" alt="${escapeHtml(p.title)}" loading="lazy" />
+      <h4>${escapeHtml(p.title)}</h4>
+      <div class="price">${(p.price_cents/100).toFixed(2)} €</div>
+      <div class="small">Livraison rapide • Garantie 2 ans</div>
+      <div style="margin-top:12px;">
+        <button class="primary" onclick="addToCart('${p.id}')">Ajouter au panier</button>
+        <button style="margin-left:8px" onclick="viewDetails('${p.id}')">Voir</button>
+      </div>
+    `;
+    storeSection.appendChild(card);
+  });
+  updateUserArea();
+}
+
+/* Quick product view (modal-like) */
+function viewDetails(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  const w = window.open("", "_blank", "width=520,height=640");
+  w.document.title = p.title;
+  w.document.body.style.fontFamily = "Arial, sans-serif";
+  w.document.body.innerHTML = `
+    <div style="padding:18px;text-align:center;">
+      <h2>${escapeHtml(p.title)}</h2>
+      <img src="${p.img}" style="width:100%;height:auto;border-radius:10px;margin:12px 0" />
+      <p style="font-weight:700">${(p.price_cents/100).toFixed(2)} €</p>
+      <p class="muted">Description : Audio haute fidélité, réduction de bruit (simulée).</p>
+      <button id="buyBtn" style="padding:10px 14px;border-radius:8px;background:#27ae60;color:#fff;border:0;cursor:pointer">Ajouter au panier</button>
+    </div>
+  `;
+  w.document.getElementById("buyBtn").addEventListener("click", ()=>{
+    if(!currentUser){ alert("Connecte-toi d'abord pour acheter."); return; }
+    cart.push(p); saveCart(); w.close(); renderCart();
+  });
+}
+
+/* ---------- Cart logic ---------- */
+function loadCart(){
+  try{ return JSON.parse(localStorage.getItem(`novashop_cart_${currentUser ? currentUser.email : 'guest'}`)) || []; } catch(e){ return []; }
+}
+function saveCart(){
+  localStorage.setItem(`novashop_cart_${currentUser ? currentUser.email : 'guest'}`, JSON.stringify(cart));
+  updateCartCount();
+}
+
+function addToCart(id){
+  if(!currentUser){
+    alert("Tu dois être connecté pour ajouter des produits. Crée un compte ou connecte-toi.");
+    return;
+  }
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  cart.push(p);
+  saveCart();
+  renderCart();
+}
+
+/* Remove and change qty (we store duplicates as separate items for simplicity; add more logic if you prefer quantities) */
+function removeFromCart(index){
+  cart.splice(index,1);
+  saveCart();
+  renderCart();
+}
+
+function computeTotals(){
+  let subtotal = 0;
+  cart.forEach(p => subtotal += p.price_cents);
+  const tax = Math.round(subtotal * 0.20);
+  const total = subtotal + tax;
+  return { subtotal, tax, total };
+}
+
+function renderCart(){
+  cart = loadCart();
+  cartItemsDiv.innerHTML = "";
+  if(cart.length === 0){
+    cartItemsDiv.innerHTML = `<p class="small">Ton panier est vide.</p>`;
+  } else {
+    cart.forEach((p, idx) => {
+      const row = document.createElement("p");
+      row.innerHTML = `${escapeHtml(p.title)} <span> ${(p.price_cents/100).toFixed(2)} € 
+        <button class="remove-btn" onclick="removeFromCart(${idx})">Supprimer</button></span>`;
+      cartItemsDiv.appendChild(row);
+    });
+  }
+  const t = computeTotals();
+  subtotalEl.textContent = (t.subtotal/100).toFixed(2) + " €";
+  taxEl.textContent = (t.tax/100).toFixed(2) + " €";
+  totalEl.textContent = (t.total/100).toFixed(2) + " €";
+  renderPayPalButton(t.total);
+  updateCartCount();
+}
+
+/* Update small cart count in header */
+function updateCartCount(){
+  const count = cart.length;
+  cartCountSpan.textContent = count;
+}
+
+/* Render PayPal button. Always render the button, but disable if not logged in or total=0 */
+let paypalRendered = false;
+function renderPayPalButton(totalCents){
+  const container = document.getElementById("paypal-button-container");
+  container.innerHTML = ""; // clear previous
+
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
+    onInit: function(data, actions) {
+      if(!currentUser || totalCents === 0) actions.disable();
+      // enable if both conditions satisfied later - handled by re-rendering
+    },
+    createOrder: function(data, actions) {
+      if(!currentUser) { alert("Connecte-toi pour payer."); return; }
+      if(totalCents === 0){ alert("Ton panier est vide."); return; }
+      const totalEurosStr = (totalCents/100).toFixed(2);
+      return actions.order.create({
+        purchase_units: [{
+          amount: { value: totalEurosStr },
+          description: `Commande NovaShop - ${currentUser.email}`
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        // Sauvegarde commande côté client (exemple)
+        const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+        orders.push({
+          id: data.orderID,
+          payer: details.payer,
+          total_cents: computeTotals().total,
+          items: cart,
+          date: new Date().toISOString(),
+          user: currentUser ? currentUser.email : null
+        });
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        alert("Paiement accepté — merci " + (details.payer.name?.given_name || "") + " !");
+        cart = [];
+        saveCart();
+        renderCart();
+      });
+    },
+    onError: function(err){
+      console.error("PayPal error", err);
+      alert("Erreur PayPal: " + (err && err.message ? err.message : "voir console"));
+    }
+  }).render('#paypal-button-container');
+}
+
+/* ---------- Helpers ---------- */
+function escapeHtml(str){
+  if(!str) return "";
+  return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+/* ---------- Event bindings ---------- */
+registerBtn.addEventListener("click", registerUser);
+loginBtn.addEventListener("click", login);
+
+/* Init on page load */
+(function init(){
+  // If session exists, set currentUser and load their cart
+  if(currentUser){
+    cart = loadCart();
+  } else {
+    cart = [];
+  }
+  renderProducts();
+  renderCart();
+  updateUserArea();
+})();
