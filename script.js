@@ -12,18 +12,40 @@ function loadProducts() {
   list.innerHTML = "";
   products.forEach(p => {
     const div = document.createElement("div");
-    div.innerHTML = `<h3>${p.name}</h3><img src="${p.image}" alt="${p.name}"><p>${p.price} €</p><button onclick="addToCart(${p.id},'${p.name}',${p.price})">Ajouter au panier</button>`;
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <img src="${p.image}" alt="${p.name}" onclick="zoomImage('${p.image}')">
+      <p>${p.price} €</p>
+      <button onclick="addToCart(${p.id},'${p.name}',${p.price})">Ajouter au panier</button>
+    `;
     list.appendChild(div);
   });
 }
 
+// Zoom image simple
+function zoomImage(src) {
+  const modal = document.createElement("div");
+  modal.style.position="fixed";
+  modal.style.top="0"; modal.style.left="0"; modal.style.width="100%"; modal.style.height="100%";
+  modal.style.background="rgba(0,0,0,0.8)"; modal.style.display="flex"; modal.style.justifyContent="center"; modal.style.alignItems="center";
+  modal.innerHTML=`<img src="${src}" style="max-width:80%; max-height:80%; border-radius:15px;"><span style="position:absolute;top:20px;right:30px;color:white;font-size:2rem;cursor:pointer;">&times;</span>`;
+  modal.querySelector("span").onclick=()=>modal.remove();
+  document.body.appendChild(modal);
+}
+
 // Panier
 function addToCart(id,name,price){ cart.push({id,name,price}); renderCart(); }
+function removeFromCart(index){ cart.splice(index,1); renderCart(); }
 
 function renderCart(){
   const ul=document.getElementById("cart-items"); ul.innerHTML="";
   let total=0;
-  cart.forEach(item=>{ const li=document.createElement("li"); li.textContent=`${item.name} - ${item.price} €`; ul.appendChild(li); total+=item.price; });
+  cart.forEach((item,index)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`${item.name} - ${item.price} € <button onclick="removeFromCart(${index})" style="background:red;padding:0.2rem 0.5rem;border:none;color:white;border-radius:5px;">X</button>`;
+    ul.appendChild(li);
+    total+=item.price;
+  });
   document.getElementById("cart-total").textContent=`Total : ${total} €`;
   renderPayPalButton(total);
 }
@@ -38,15 +60,15 @@ function renderPayPalButton(total){
   }).render("#paypal-button-container");
 }
 
-// Authentification simulée
+// Auth simulé
 function showLogin(){ showAuth("Connexion","Se connecter",login); }
 function showRegister(){ showAuth("Créer un compte","S'inscrire",register); }
 function showAuth(title,btnText,callback){ document.getElementById("auth-title").textContent=title; document.getElementById("auth-submit").textContent=btnText; document.getElementById("auth-submit").onclick=callback; document.getElementById("auth-modal").style.display="flex"; }
 function closeModal(){ document.getElementById("auth-modal").style.display="none"; }
-
 function login(){ const username=document.getElementById("auth-username").value; alert("Connexion simulée pour : "+username); closeModal(); }
 function register(){ const username=document.getElementById("auth-username").value; alert("Inscription simulée pour : "+username); closeModal(); }
 
-// Initialisation
+// Init
 loadProducts();
 renderCart();
+
