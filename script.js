@@ -1,101 +1,52 @@
-// Produits AirPods
-const PRODUCTS = [
-    {id: 1, name: "AirPods 4", price: 5000, img: "https://via.placeholder.com/220x150?text=AirPods+4"},
-    {id: 2, name: "AirPods Pro 2", price: 5500, img: "https://via.placeholder.com/220x150?text=AirPods+Pro+2"}
+let cart = [];
+
+// Produits
+const products = [
+  { id: 1, name: "AirPods 4", price: 50, image: "images/airpods4.jpg" },
+  { id: 2, name: "AirPods Pro 2", price: 55, image: "images/airpodspro2.jpg" }
 ];
 
-let cart = [];
-let loggedIn = false;
-
-// Affichage des produits
-function renderProducts() {
-    const container = document.getElementById("products");
-    container.innerHTML = "";
-    PRODUCTS.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-            <img src="${p.img}" alt="${p.name}">
-            <h3>${p.name}</h3>
-            <p>Prix : ${(p.price/100).toFixed(2)} €</p>
-            <button onclick="addToCart(${p.id})">Ajouter au panier</button>
-        `;
-        container.appendChild(div);
-    });
+// Afficher produits
+function loadProducts() {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.innerHTML = `<h3>${p.name}</h3><img src="${p.image}" alt="${p.name}"><p>${p.price} €</p><button onclick="addToCart(${p.id},'${p.name}',${p.price})">Ajouter au panier</button>`;
+    list.appendChild(div);
+  });
 }
 
-// Ajouter au panier
-function addToCart(id) {
-    if (!loggedIn) {
-        alert("Veuillez vous connecter pour ajouter des produits au panier.");
-        return;
-    }
-    const product = PRODUCTS.find(p => p.id === id);
-    cart.push(product);
-    renderCart();
+// Panier
+function addToCart(id,name,price){ cart.push({id,name,price}); renderCart(); }
+
+function renderCart(){
+  const ul=document.getElementById("cart-items"); ul.innerHTML="";
+  let total=0;
+  cart.forEach(item=>{ const li=document.createElement("li"); li.textContent=`${item.name} - ${item.price} €`; ul.appendChild(li); total+=item.price; });
+  document.getElementById("cart-total").textContent=`Total : ${total} €`;
+  renderPayPalButton(total);
 }
 
-// Affichage du panier
-function renderCart() {
-    const container = document.getElementById("cart-items");
-    container.innerHTML = "";
-    let total = 0;
-    cart.forEach(p => {
-        total += p.price;
-        container.innerHTML += `<p>${p.name} - ${(p.price/100).toFixed(2)} €</p>`;
-    });
-    document.getElementById("order-total").textContent = (total/100).toFixed(2) + " €";
-    renderPayPalButton(total);
+// PayPal
+function renderPayPalButton(total){
+  const container=document.getElementById("paypal-button-container"); container.innerHTML="";
+  if(total===0) return;
+  paypal.Buttons({
+    createOrder:(data,actions)=>actions.order.create({purchase_units:[{amount:{value:total.toFixed(2)}}]}),
+    onApprove:async(data,actions)=>{ const details=await actions.order.capture(); alert("Paiement réussi par "+details.payer.name.given_name); cart=[]; renderCart(); }
+  }).render("#paypal-button-container");
 }
 
-// Bouton PayPal
-function renderPayPalButton(totalCents) {
-    const container = document.getElementById("paypal-button-container");
-    container.innerHTML = "";
+// Authentification simulée
+function showLogin(){ showAuth("Connexion","Se connecter",login); }
+function showRegister(){ showAuth("Créer un compte","S'inscrire",register); }
+function showAuth(title,btnText,callback){ document.getElementById("auth-title").textContent=title; document.getElementById("auth-submit").textContent=btnText; document.getElementById("auth-submit").onclick=callback; document.getElementById("auth-modal").style.display="flex"; }
+function closeModal(){ document.getElementById("auth-modal").style.display="none"; }
 
-    paypal.Buttons({
-        style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
-        onInit: function(data, actions) {
-            if (totalCents === 0) {
-                actions.disable();
-            }
-        },
-        createOrder: function(data, actions) {
-            if (totalCents === 0) {
-                alert("Votre panier est vide !");
-                return;
-            }
-            return actions.order.create({
-                purchase_units: [{
-                    amount: { value: (totalCents/100).toFixed(2) }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert("Paiement réussi par " + details.payer.name.given_name);
-                cart = [];
-                renderCart();
-            });
-        }
-    }).render('#paypal-button-container');
-}
-
-// Connexion simple
-function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    if (username === "admin" && password === "1234") {
-        loggedIn = true;
-        document.getElementById("login-message").textContent = "Connecté avec succès !";
-        document.getElementById("login-message").style.color = "green";
-        renderProducts();
-    } else {
-        document.getElementById("login-message").textContent = "Nom d'utilisateur ou mot de passe incorrect.";
-        document.getElementById("login-message").style.color = "red";
-    }
-}
+function login(){ const username=document.getElementById("auth-username").value; alert("Connexion simulée pour : "+username); closeModal(); }
+function register(){ const username=document.getElementById("auth-username").value; alert("Inscription simulée pour : "+username); closeModal(); }
 
 // Initialisation
-renderProducts();
-renderPayPalButton(0);
+loadProducts();
+renderCart();
