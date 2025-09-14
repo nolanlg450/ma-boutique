@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique Pro - AirPods</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
+</head>
+<body>
+<header>
+<h1>Boutique Pro</h1>
+<nav>
+<button onclick="showLogin()">Connexion</button>
+<button onclick="showRegister()">Créer un compte</button>
+</nav>
+</header>
+
+<main>
+<section id="products">
+<h2>Nos Produits</h2>
+<div id="product-list"></div>
+</section>
+
+<section id="cart">
+<h2>Votre Panier</h2>
+<ul id="cart-items"></ul>
+<p id="cart-total">Total : 0 €</p>
+<div id="paypal-button-container"></div>
+</section>
+</main>
+
+<div id="auth-modal" class="modal" style="display:none;">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">&times;</span>
+<h2 id="auth-title"></h2>
+<input type="text" id="auth-username" placeholder="Nom d'utilisateur">
+<input type="password" id="auth-password" placeholder="Mot de passe">
+<button id="auth-submit"></button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
