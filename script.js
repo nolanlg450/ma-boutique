@@ -1,5 +1,4 @@
 /* NovaShop — frontend static
-   - Remplace TON_CLIENT_ID dans index.html par ton PayPal Client ID (sandbox pour tests).
    - Place images/airpods4.jpg et images/airpodspro2.jpg dans le repo.
 */
 
@@ -10,8 +9,8 @@ const PRODUCTS = [
 ];
 
 /* State */
-let cart = [];               // array of { id, qty }
-let currentUser = null;      // { name, email }
+let cart = [];
+let currentUser = null;
 
 /* Helpers */
 function formatEuro(n){ return Number(n).toFixed(2) + " €"; }
@@ -42,7 +41,7 @@ function findProduct(id){ return PRODUCTS.find(p=>p.id===id); }
 
 function addToCart(id){
   if(!currentUser){
-    alert("Tu dois être connecté pour ajouter au panier.Connecte toi ou inscris-toi.");
+    alert("Tu dois être connecté pour ajouter au panier.");
     showLogin();
     return;
   }
@@ -94,7 +93,8 @@ function updateCartUI(){
     subtotal += p.price * c.qty;
   });
 
-  const tax = Math.round(subtotal * 0.02 * 100) / 100;
+  const taxRate = 0.02; // 2%
+  const tax = Math.round(subtotal * taxRate * 100) / 100;
   const total = Math.round((subtotal + tax) * 100) / 100;
 
   document.getElementById("subtotal").textContent = formatEuro(subtotal);
@@ -264,4 +264,5 @@ function renderPayPalButton(total){
     }
   }).render('#paypal-button-container');
 }
+
 
