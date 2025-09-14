@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
   font-family: Arial, sans-serif;
   margin: 0; padding: 0;
@@ -60,4 +61,77 @@ button:hover {
 }
 .close {
   float: right; cursor: pointer;
+=======
+/* ========== Basic layout ========== */
+:root{
+  --accent:#0a74c2;
+  --accent-dark:#065ea6;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --radius:14px;
+  --glass: rgba(255,255,255,0.6);
+}
+
+*{box-sizing:border-box}
+body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:#0f1724; background:var(--bg); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
+.container{max-width:1100px;margin:0 auto;padding:0 18px}
+
+/* Header */
+.site-header{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:#fff; position:sticky; top:0; z-index:60; box-shadow:0 6px 18px rgba(10,20,40,0.08)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{font-weight:700;font-size:20px;color:#fff;text-decoration:none}
+.nav .btn{margin-left:10px;padding:8px 12px;border-radius:8px;border:0;background:rgba(255,255,255,0.12);color:white;cursor:pointer}
+.btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.18)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(10,20,40,0.08)}
+
+/* Hero */
+.hero{padding:60px 0;display:flex;align-items:center}
+.hero-inner{display:flex;gap:30px;align-items:center}
+.hero-text{flex:1;color:white}
+.hero-text h1{font-size:40px;margin:0 0 12px;line-height:1.02}
+.hero-text p{opacity:0.95;margin-bottom:18px}
+.hero-visual img{width:320px;border-radius:22px;box-shadow:0 20px 50px rgba(2,6,23,0.25);transform:translateY(-6px)}
+
+/* Features */
+.features{padding:18px 0;background:transparent}
+.features-grid{display:flex;gap:18px;justify-content:space-between}
+.feature{background:var(--card);padding:16px;border-radius:10px;flex:1;text-align:center;box-shadow:0 8px 20px rgba(2,6,23,0.06)}
+
+/* Products */
+.products{padding:36px 0}
+.section-title{text-align:center;font-size:28px;margin-bottom:18px}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.product-card{background:var(--card);border-radius:14px;padding:18px;text-align:center;box-shadow:0 10px 30px rgba(2,6,23,0.06);transition:transform .25s,box-shadow .25s}
+.product-card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(2,6,23,0.08)}
+.product-media{height:180px;display:flex;align-items:center;justify-content:center}
+.product-media img{max-width:100%;max-height:100%;border-radius:10px;cursor:pointer;transition:transform .25s}
+.product-media img:hover{transform:scale(1.06)}
+.price{font-weight:700;color:var(--accent);margin:10px 0}
+
+/* Cart panel */
+.cart-panel{position:fixed;right:20px;top:80px;width:360px;background:var(--card);border-radius:12px;padding:14px;box-shadow:0 30px 80px rgba(2,6,23,0.12);z-index:80}
+.hidden{display:none}
+.cart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.close-x{background:transparent;border:0;font-size:20px;cursor:pointer}
+.cart-items{max-height:320px;overflow:auto;margin-bottom:12px}
+.cart-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
+.cart-summary{font-weight:600;text-align:right}
+
+/* Modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:90}
+.modal-card{width:360px;background:var(--card);padding:18px;border-radius:12px;position:relative;box-shadow:0 30px 80px rgba(2,6,23,0.14)}
+.modal-card input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e6eef7}
+
+/* Footer */
+.site-footer{padding:24px 0;text-align:center;color:var(--muted);font-size:14px}
+
+/* Responsive */
+@media(max-width:880px){
+  .hero-inner{flex-direction:column; text-align:center}
+  .hero-visual img{width:260px}
+  .cart-panel{right:10px;left:10px;width:auto}
+  .product-media{height:150px}
+>>>>>>> 4b845a8b2d6d408fa6ada770f03f24f43dbcb9d5
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -43,3 +44,127 @@
 <script src="script.js"></script>
 </body>
 </html>
+=======
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NovaShop — AirPods</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- PayPal SDK: remplace TON_CLIENT_ID par ton Client ID -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">NovaShop</a>
+      <nav class="nav">
+        <button class="btn ghost" onclick="openCart()">Panier (<span id="cart-count">0</span>)</button>
+        <button class="btn" onclick="showLogin()">Connexion</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1>Audio premium, design minimal</h1>
+          <p>AirPods 4 & AirPods Pro 2 — confort, puissance et style. Livraison rapide.</p>
+          <div class="hero-cta">
+            <button class="btn" onclick="scrollToProducts()">Voir les produits</button>
+            <a class="link" href="#products">Découvrir</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="images/airpods4.jpg" alt="AirPods 4" class="floating" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="products container">
+      <h2 class="section-title">Nos best-sellers</h2>
+      <div id="product-list" class="product-grid"></div>
+    </section>
+
+    <!-- Features strip -->
+    <section class="features">
+      <div class="container features-grid">
+        <div class="feature">
+          <strong>Garantie 2 ans</strong>
+          <p>Confiance & tranquillité.</p>
+        </div>
+        <div class="feature">
+          <strong>Livraison express</strong>
+          <p>Expédition sous 24h.</p>
+        </div>
+        <div class="feature">
+          <strong>Paiement sécurisé</strong>
+          <p>PayPal & plus tard Stripe.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cart slide-over -->
+  <aside id="cart-panel" class="cart-panel hidden">
+    <div class="cart-header">
+      <h3>Ton panier</h3>
+      <button class="close-x" onclick="closeCart()">×</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-summary">
+      <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
+      <div>TVA (20%): <strong id="tax">0,00 €</strong></div>
+      <div class="total">Total: <strong id="total">0,00 €</strong></div>
+      <div id="paypal-button-container" style="margin-top:12px;"></div>
+    </div>
+  </aside>
+
+  <!-- Auth modal -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-card">
+      <button class="close-x" onclick="closeModal()">×</button>
+      <div id="auth-forms">
+        <div id="login-form" class="auth-form">
+          <h3>Connexion</h3>
+          <input id="login-username" placeholder="Email" />
+          <input id="login-password" type="password" placeholder="Mot de passe" />
+          <button class="btn" onclick="login()">Se connecter</button>
+          <p class="muted">Pas de compte ? <a href="#" onclick="toggleAuth()">Créer un compte</a></p>
+          <div id="login-msg" class="muted"></div>
+        </div>
+
+        <div id="register-form" class="auth-form hidden">
+          <h3>Créer un compte</h3>
+          <input id="reg-username" placeholder="Nom complet" />
+          <input id="reg-email" placeholder="Email" />
+          <input id="reg-password" type="password" placeholder="Mot de passe" />
+          <button class="btn" onclick="register()">S'inscrire</button>
+          <p class="muted">Déjà inscrit ? <a href="#" onclick="toggleAuth()">Se connecter</a></p>
+          <div id="reg-msg" class="muted"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+>>>>>>> 4b845a8b2d6d408fa6ada770f03f24f43dbcb9d5
