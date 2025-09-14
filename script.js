@@ -42,7 +42,7 @@ function findProduct(id){ return PRODUCTS.find(p=>p.id===id); }
 
 function addToCart(id){
   if(!currentUser){
-    alert("Tu dois être connecté pour ajouter au panier. Ouvre la connexion.");
+    alert("Tu dois être connecté pour ajouter au panier.Connecte toi ou inscris-toi.");
     showLogin();
     return;
   }
@@ -94,7 +94,7 @@ function updateCartUI(){
     subtotal += p.price * c.qty;
   });
 
-  const tax = Math.round(subtotal * 0.20 * 100) / 100;
+  const tax = Math.round(subtotal * 0.02 * 100) / 100;
   const total = Math.round((subtotal + tax) * 100) / 100;
 
   document.getElementById("subtotal").textContent = formatEuro(subtotal);
