@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NovaShop — AirPods</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
 </head>
 <body>
 
@@ -66,6 +67,38 @@
     <button id="close-cart" class="btn btn-close">×</button>
   </aside>
 
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-x" id="auth-close">×</span>
+
+      <div id="login-form">
+        <h3>Connexion</h3>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Mot de passe">
+        <button id="login-submit" class="btn">Se connecter</button>
+        <p>Pas encore inscrit ? <a href="#" id="switch-to-register">Créer un compte</a></p>
+      </div>
+
+      <div id="register-form" class="hidden">
+        <h3>Créer un compte</h3>
+        <input type="text" id="reg-name" placeholder="Nom complet">
+        <input type="email" id="reg-email" placeholder="Email">
+        <input type="password" id="reg-password" placeholder="Mot de passe">
+        <button id="register-submit" class="btn">S'inscrire</button>
+        <p>Déjà inscrit ? <a href="#" id="switch-to-login">Se connecter</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer">
+      <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
+
