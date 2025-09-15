@@ -21,20 +21,27 @@
 </header>
 
 <main>
+  <!-- Hero avec animation -->
   <section class="hero">
     <div class="hero-text">
       <h2>Audio Premium. Écoute élégante.</h2>
       <p>AirPods 4 & AirPods Pro 2 — qualité sonore incroyable, design élégant.</p>
       <button onclick="scrollToProducts()">Voir les produits</button>
     </div>
+    <div class="hero-carousel" id="hero-carousel">
+      <img src="images/airpods4.jpg" alt="AirPods 4">
+      <img src="images/airpodspro2.jpg" alt="AirPods Pro 2">
+    </div>
   </section>
 
+  <!-- Produits avec effets hover -->
   <section id="products" class="products container">
     <h2>Nos Produits</h2>
     <div class="product-grid" id="product-list"></div>
   </section>
 </main>
 
+<!-- Panier -->
 <aside id="cart-panel" class="cart-panel hidden">
   <h3>Ton Panier</h3>
   <button id="close-cart">×</button>
