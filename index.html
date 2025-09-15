@@ -1,109 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NovaShop — AirPods</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- PayPal SDK: remplace TON_CLIENT_ID par ton Client ID si tu veux paiement direct -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="#">NovaShop</a>
-      <div class="header-right">
-        <div id="user-area" class="user-area"></div>
-        <button class="btn cart-btn" id="open-cart">Panier (<span id="cart-count">0</span>)</button>
+
+  <!-- Header -->
+  <header>
+    <div class="container header">
+      <h1>NovaShop</h1>
+      <div>
+        <button id="login-btn" class="btn">Connexion</button>
+        <button id="signup-btn" class="btn">Créer un compte</button>
+        <button id="open-cart" class="btn">Panier (<span id="cart-count">0</span>)</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1>Audio premium. Simplicité élégante.</h1>
-          <p class="lead">AirPods 4 & AirPods Pro 2 — son limpide, ergonomie, design. Livraison rapide.</p>
-          <div class="cta">
-            <button class="btn" onclick="scrollToProducts()">Voir les produits</button>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <img src="images/airpods4.jpg" alt="AirPods" class="hero-image" />
-        </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h2>Audio premium. Simplicité élégante.</h2>
+        <p>AirPods 4 & AirPods Pro 2 — Son limpide, design ergonomique. Livraison rapide.</p>
+        <button class="btn" onclick="scrollToProducts()">Voir les produits</button>
       </div>
-    </section>
-
-    <section id="products" class="products container">
-      <h2 class="section-title">Nos produits</h2>
-      <div id="product-list" class="product-grid"></div>
-    </section>
-  </main>
-
-  <!-- Cart panel -->
-  <aside id="cart-panel" class="cart-panel hidden" aria-hidden="true">
-    <div class="cart-header">
-      <h3>Ton panier</h3>
-      <button class="close-x" id="close-cart">×</button>
+      <div class="hero-image">
+        <img src="images/airpods4.jpg" alt="AirPods 4">
+      </div>
     </div>
-    <div id="cart-items" class="cart-items"></div>
-    <div class="cart-summary">
-      <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
-      <div>TVA (2%): <strong id="tax">0,00 €</strong></div>
-      <div class="total">Total: <strong id="total">0,00 €</strong></div>
+  </section>
 
-      <!-- Bouton pour rediriger vers page checkout -->
-      <button id="go-checkout" class="btn" style="margin-top:12px;">Valider ma commande</button>
+  <!-- Produits -->
+  <section id="products" class="container">
+    <h2>Nos produits</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="images/airpods4.jpg" alt="AirPods 4">
+        <h3>AirPods 4</h3>
+        <p>Écouteurs sans fil nouvelle génération.</p>
+        <p class="price">50 €</p>
+        <button onclick="addToCart('AirPods 4',50)">Ajouter au panier</button>
+      </div>
+      <div class="product-card">
+        <img src="images/airpodspro2.jpg" alt="AirPods Pro 2">
+        <h3>AirPods Pro 2</h3>
+        <p>Qualité sonore exceptionnelle avec réduction de bruit.</p>
+        <p class="price">55 €</p>
+        <button onclick="addToCart('AirPods Pro 2',55)">Ajouter au panier</button>
+      </div>
     </div>
+  </section>
+
+  <!-- Panier -->
+  <aside id="cart" class="cart-panel hidden">
+    <h3>Panier</h3>
+    <ul id="cart-items"></ul>
+    <p>Sous-total: <span id="subtotal">0 €</span></p>
+    <p>TVA (2%): <span id="tax">0 €</span></p>
+    <p>Total: <span id="total">0 €</span></p>
+    <button id="go-checkout" class="btn">Valider ma commande</button>
+    <button id="close-cart" class="btn btn-close">×</button>
   </aside>
 
-  <!-- Auth modal -->
-  <div id="auth-modal" class="modal hidden" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true">
-      <button class="close-x" id="auth-close" title="Fermer">×</button>
-
-      <div id="auth-forms">
-        <div id="login-form" class="auth-form">
-          <h3>Connexion</h3>
-          <input id="login-email" type="email" placeholder="Email" />
-          <input id="login-password" type="password" placeholder="Mot de passe" />
-          <button class="btn" id="login-btn">Se connecter</button>
-          <p class="muted">Pas encore inscrit ? <a href="#" id="to-register">Créer un compte</a></p>
-          <div id="login-msg" class="muted"></div>
-        </div>
-
-        <div id="register-form" class="auth-form hidden">
-          <h3>Créer un compte</h3>
-          <input id="reg-name" type="text" placeholder="Nom complet" />
-          <input id="reg-email" type="email" placeholder="Email" />
-          <input id="reg-password" type="password" placeholder="Mot de passe (min 4)"/>
-          <button class="btn" id="register-btn">S'inscrire</button>
-          <p class="muted">Déjà inscrit ? <a href="#" id="to-login">Se connecter</a></p>
-          <div id="reg-msg" class="muted"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
-    </div>
-  </footer>
-
   <script src="script.js"></script>
-
-  <!-- Redirection vers checkout -->
-  <script>
-    document.getElementById("go-checkout").addEventListener("click", () => {
-      // Sauvegarde le panier dans localStorage
-      const cart = JSON.parse(localStorage.getItem("ns_cart_guest") || "[]");
-      localStorage.setItem("cart", JSON.stringify(cart));
-      // Redirige vers checkout.html
-      window.location.href = "checkout.html";
-    });
-  </script>
-
 </body>
 </html>
+
