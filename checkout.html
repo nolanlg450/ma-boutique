@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NovaShop — Checkout</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaShop — Checkout</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
 
@@ -22,30 +22,12 @@
   <section class="checkout container">
     <h2>Adresse de livraison</h2>
     <form id="checkout-form">
-      <div class="form-group">
-        <label for="name">Nom complet</label>
-        <input type="text" id="name" required placeholder="John Doe">
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" required placeholder="john@example.com">
-      </div>
-      <div class="form-group">
-        <label for="address">Adresse</label>
-        <input type="text" id="address" required placeholder="123 rue Exemple">
-      </div>
-      <div class="form-group">
-        <label for="city">Ville</label>
-        <input type="text" id="city" required placeholder="Paris">
-      </div>
-      <div class="form-group">
-        <label for="zip">Code postal</label>
-        <input type="text" id="zip" required placeholder="75001">
-      </div>
-      <div class="form-group">
-        <label for="country">Pays</label>
-        <input type="text" id="country" required placeholder="France">
-      </div>
+      <div class="form-group"><label for="name">Nom complet</label><input id="name" required></div>
+      <div class="form-group"><label for="email">Email</label><input id="email" required></div>
+      <div class="form-group"><label for="address">Adresse</label><input id="address" required></div>
+      <div class="form-group"><label for="city">Ville</label><input id="city" required></div>
+      <div class="form-group"><label for="zip">Code postal</label><input id="zip" required></div>
+      <div class="form-group"><label for="country">Pays</label><input id="country" required></div>
 
       <h3>Résumé du panier</h3>
       <div id="checkout-cart-items"></div>
@@ -65,4 +47,5 @@
 <script src="checkout.js"></script>
 </body>
 </html>
+
 
