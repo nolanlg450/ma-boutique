@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finaliser ma commande</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR"></script>
+</head>
+<body>
+  <h1>Finaliser ma commande</h1>
+
+  <form id="checkout-form">
+    <label>Nom et Prénom</label>
+    <input type="text" id="fullname" required>
+
+    <label>Adresse</label>
+    <input type="text" id="address" required>
+
+    <label>Ville</label>
+    <input type="text" id="city" required>
+
+    <label>Code Postal</label>
+    <input type="text" id="zipcode" required>
+
+    <label>Pays</label>
+    <input type="text" id="country" required>
+
+    <label>Email</label>
+    <input type="email" id="email" required>
+  </form>
+
+  <h2>Résumé de la commande</h2>
+  <div id="order-summary"></div>
+
+  <div id="paypal-button-container"></div>
+
+  <script src="checkout.js"></script>
+</body>
+</html>
