@@ -8,7 +8,6 @@ const subtotalEl = document.getElementById("checkout-subtotal");
 const taxEl = document.getElementById("checkout-tax");
 const totalEl = document.getElementById("checkout-total");
 
-// Affichage panier
 function renderCart(){
   cartItemsEl.innerHTML="";
   cart.forEach((item,index)=>{
@@ -21,6 +20,7 @@ function renderCart(){
   totalEl.textContent = total.toFixed(2)+" €";
   renderPayPal(total);
 }
+
 function removeFromCart(index){
   cart.splice(index,1);
   subtotal = cart.reduce((acc,item)=>acc+item.price*item.qty,0);
@@ -31,7 +31,6 @@ function removeFromCart(index){
 }
 renderCart();
 
-// PayPal
 function renderPayPal(total){
   const container = document.getElementById("paypal-button-container");
   container.innerHTML="";
@@ -49,4 +48,3 @@ function renderPayPal(total){
     }
   }).render('#paypal-button-container');
 }
-
