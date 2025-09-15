@@ -1,42 +1,40 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  margin:0;
-  padding:0;
-}
+/* ---- Global ---- */
+body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333;}
+.container {width:90%; max-width:1200px; margin:auto;}
+h1,h2,h3 {color:#1a73e8;}
 
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
+/* ---- Header ---- */
+header {background:#1a73e8; color:#fff; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; border-radius:0 0 10px 10px;}
+header h1 {font-size:24px;}
+header .btn {margin-left:10px; padding:7px 12px; cursor:pointer; border:none; border-radius:5px; transition:0.3s;}
+header .btn:hover {background:#1558b0; color:#fff;}
 
-header {
-  background: #1a73e8;
-  color: #fff;
-  padding: 15px 0;
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* ---- Hero ---- */
+.hero {display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; background:#e8f0fe; padding:20px; border-radius:10px; margin:20px 0;}
+.hero-text {max-width:600px; margin-bottom:10px;}
+.hero-text button {margin-top:10px; padding:10px 15px; cursor:pointer; border:none; border-radius:5px; background:#1a73e8; color:#fff; transition:0.3s;}
+.hero-text button:hover {background:#1558b0;}
+.hero-image img {width:250px; border-radius:10px;}
 
-header h1 {margin-left:10px;}
-header .btn {margin-left:10px; padding:7px 12px; cursor:pointer;}
-
-.hero {display:flex; justify-content:space-between; align-items:center; background:#e8f0fe; padding:20px; border-radius:10px; margin:20px 0;}
-.hero img {width:250px; border-radius:10px;}
-.hero-text {max-width:600px;}
-.hero-text button{margin-top:10px; padding:10px 15px;}
-
-.product-grid {display:flex; gap:20px; flex-wrap:wrap;}
-.product-card {background:#fff; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex:1; min-width:250px; text-align:center;}
-.product-card img {width:150px; margin-bottom:10px; border-radius:10px;}
+/* ---- Produits ---- */
+.product-grid {display:flex; gap:20px; flex-wrap:wrap; justify-content:center;}
+.product-card {background:#fff; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex:1; min-width:250px; text-align:center; transition:0.3s;}
+.product-card:hover {transform:translateY(-5px);}
+.product-card img {width:150px; border-radius:10px; margin-bottom:10px;}
 .product-card .price {font-weight:bold; color:#1a73e8; margin:10px 0;}
-.product-card button{padding:8px 12px; cursor:pointer; background:#1a73e8; color:#fff; border:none; border-radius:5px;}
+.product-card button {padding:8px 12px; cursor:pointer; background:#1a73e8; color:#fff; border:none; border-radius:5px; transition:0.3s;}
+.product-card button:hover {background:#1558b0;}
 
-.cart-panel {position:fixed; top:50px; right:20px; background:#fff; padding:15px; border-radius:10px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+/* ---- Panier ---- */
+.cart-panel {position:fixed; top:60px; right:20px; background:#fff; padding:15px; border-radius:10px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2);}
 .cart-panel.hidden {display:none;}
-.cart-panel button{width:100%; padding:10px; margin-top:10px; border:none; border-radius:5px; cursor:pointer;}
+.cart-panel button {width:100%; padding:10px; margin-top:10px; cursor:pointer; border:none; border-radius:5px; transition:0.3s;}
 .btn-close {background:red; color:#fff;}
+
+/* ---- Formulaire Checkout ---- */
+form {background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:20px;}
+form label {display:block; margin:10px 0 5px; font-weight:bold;}
+form input {width:100%; padding:10px; border-radius:5px; border:1px solid #ccc; margin-bottom:15px; transition:0.3s;}
+form input:focus {border-color:#1a73e8; outline:none;}
+
 
