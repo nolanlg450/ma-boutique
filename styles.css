@@ -1,178 +1,42 @@
-/* ---- Reset de base ---- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
 body {
-  background: #f5f7fa;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
   color: #333;
-  line-height: 1.6;
-  padding: 20px;
+  margin:0;
+  padding:0;
 }
 
-/* ---- Header ---- */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
 header {
   background: #1a73e8;
   color: #fff;
-  padding: 15px 30px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  display: flex;
+  padding: 15px 0;
+  display:flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header h1 {
-  font-size: 24px;
-}
+header h1 {margin-left:10px;}
+header .btn {margin-left:10px; padding:7px 12px; cursor:pointer;}
 
-header nav button {
-  margin-left: 10px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  background: #fff;
-  color: #1a73e8;
-  cursor: pointer;
-  transition: 0.3s;
-}
+.hero {display:flex; justify-content:space-between; align-items:center; background:#e8f0fe; padding:20px; border-radius:10px; margin:20px 0;}
+.hero img {width:250px; border-radius:10px;}
+.hero-text {max-width:600px;}
+.hero-text button{margin-top:10px; padding:10px 15px;}
 
-header nav button:hover {
-  background: #e3e8f0;
-}
+.product-grid {display:flex; gap:20px; flex-wrap:wrap;}
+.product-card {background:#fff; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex:1; min-width:250px; text-align:center;}
+.product-card img {width:150px; margin-bottom:10px; border-radius:10px;}
+.product-card .price {font-weight:bold; color:#1a73e8; margin:10px 0;}
+.product-card button{padding:8px 12px; cursor:pointer; background:#1a73e8; color:#fff; border:none; border-radius:5px;}
 
-/* ---- Produits ---- */
-#products {
-  margin-bottom: 30px;
-}
+.cart-panel {position:fixed; top:50px; right:20px; background:#fff; padding:15px; border-radius:10px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.cart-panel.hidden {display:none;}
+.cart-panel button{width:100%; padding:10px; margin-top:10px; border:none; border-radius:5px; cursor:pointer;}
+.btn-close {background:red; color:#fff;}
 
-#products h2 {
-  margin-bottom: 15px;
-  color: #1a73e8;
-}
-
-.product {
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.2s;
-}
-
-.product:hover {
-  transform: translateY(-5px);
-}
-
-.product img {
-  max-width: 200px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.product h3 {
-  margin: 10px 0;
-}
-
-.product .price {
-  font-weight: bold;
-  margin: 10px 0;
-  color: #1a73e8;
-}
-
-.product button {
-  background: #1a73e8;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.product button:hover {
-  background: #1558b0;
-}
-
-/* ---- Panier ---- */
-#cart {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-#cart h2 {
-  margin-bottom: 15px;
-  color: #1a73e8;
-}
-
-#cart ul {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-#cart button {
-  background: #34a853;
-  color: #fff;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#cart button:hover {
-  background: #0d8d36;
-}
-
-/* ---- Checkout ---- */
-form {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-  max-width: 500px;
-}
-
-form label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: bold;
-}
-
-form input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 15px;
-}
-
-form input:focus {
-  border-color: #1a73e8;
-  outline: none;
-}
-
-/* ---- Résumé commande ---- */
-#order-summary {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  max-width: 500px;
-  margin-bottom: 20px;
-}
-
-#order-summary p {
-  margin: 5px 0;
-}
-
-#order-summary strong {
-  color: #1a73e8;
-}
