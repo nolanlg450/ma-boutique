@@ -1,68 +1,40 @@
-// Récupérer le panier depuis localStorage
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
+const orderSummary = document.getElementById("order-summary");
 
-// Afficher le résumé de commande
-function displayOrderSummary() {
-  let summary = "";
+function displayOrder(){
   let subtotal = 0;
-
-  cart.forEach(item => {
-    summary += `<p>${item.name} x ${item.qty} - ${item.price} €</p>`;
-    subtotal += item.price * item.qty;
+  cart.forEach(i=>{
+    subtotal += i.price*i.qty;
+    const p = document.createElement("p");
+    p.textContent = `${i.name} x ${i.qty} - ${i.price*i.qty} €`;
+    orderSummary.appendChild(p);
   });
-
-  let taxRate = 0.02; // TVA 2%
-  let tax = Math.round(subtotal * taxRate * 100) / 100;
-  let total = Math.round((subtotal + tax) * 100) / 100;
-
-  summary += `<p><strong>Sous-total :</strong> ${subtotal} €</p>`;
-  summary += `<p><strong>TVA (2%) :</strong> ${tax} €</p>`;
-  summary += `<p><strong>Total :</strong> ${total} €</p>`;
-
-  document.getElementById("order-summary").innerHTML = summary;
-  return total;
+  const tax = Math.round(subtotal*0.02*100)/100;
+  const total = subtotal + tax;
+  const summary = document.createElement("p");
+  summary.innerHTML = `<strong>Sous-total: ${subtotal} € | TVA (2%): ${tax} € | Total: ${total} €</strong>`;
+  orderSummary.appendChild(summary);
 }
 
-const total = displayOrderSummary();
+displayOrder();
 
-// Bouton PayPal
+// PayPal button
 paypal.Buttons({
-  createOrder: (data, actions) => {
-    // Vérifier que le formulaire est rempli avant paiement
-    const fullname = document.getElementById("fullname").value;
-    const address = document.getElementById("address").value;
-    const city = document.getElementById("city").value;
-    const zipcode = document.getElementById("zipcode").value;
-    const country = document.getElementById("country").value;
-    const email = document.getElementById("email").value;
-
-    if (!fullname || !address || !city || !zipcode || !country || !email) {
-      alert("Merci de remplir tous les champs avant de payer.");
-      return;
-    }
-
+  createOrder: function(data, actions){
+    const subtotal = cart.reduce((acc,i)=>acc+i.price*i.qty,0);
+    const tax = Math.round(subtotal*0.02*100)/100;
+    const total = subtotal + tax;
     return actions.order.create({
       purchase_units: [{
-        amount: {
-          value: total.toString()
-        },
-        shipping: {
-          name: { full_name: fullname },
-          address: {
-            address_line_1: address,
-            admin_area_2: city,
-            postal_code: zipcode,
-            country_code: "FR" // ⚡ Adapter si besoin
-          }
-        }
+        amount: { value: total.toFixed(2) }
       }]
     });
   },
-  onApprove: (data, actions) => {
-    return actions.order.capture().then(details => {
-      alert("Merci " + details.payer.name.given_name + "! Votre commande est confirmée.");
-      localStorage.removeItem("cart"); // vider le panier après paiement
-      window.location.href = "index.html"; // retour accueil
+  onApprove: function(data, actions){
+    return actions.order.capture().then(function(details){
+      alert(`Merci ${details.payer.name.given_name}, votre paiement de ${details.purchase_units[0].amount.value} € est confirmé !`);
+      localStorage.removeItem("cart");
+      window.location.href="index.html";
     });
   }
 }).render('#paypal-button-container');
