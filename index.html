@@ -1,45 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NovaShop — AirPods</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#121212">
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="#">NovaShop</a>
-      <input type="text" class="search-bar" placeholder="Rechercher un produit..." />
-      <button class="btn cart-btn" id="open-cart">Panier (<span id="cart-count">0</span>)</button>
+  <header>
+    <div class="container header-container">
+      <h1 class="logo">NovaShop</h1>
+      <div class="header-right">
+        <button id="cart-btn">Panier (<span id="cart-count">0</span>)</button>
+        <button id="auth-btn">Connexion / Inscription</button>
+      </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Découvrez l’Audio Nouvelle Génération</h1>
-      <p>AirPods 4 & AirPods Pro 2 — Qualité supérieure, livraison rapide, prix imbattables.</p>
-      <button class="btn primary" onclick="scrollToProducts()">Voir les produits</button>
-    </div>
-  </section>
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Audio Premium. Écoute élégante.</h2>
+        <p>AirPods 4 & AirPods Pro 2 — qualité sonore incroyable, design élégant.</p>
+        <button onclick="scrollToProducts()">Voir les produits</button>
+      </div>
+    </section>
 
-  <!-- PRODUITS -->
-  <main class="container">
-    <h2 class="section-title">Nos produits</h2>
-    <div id="product-grid" class="product-grid"><!-- produits injectés --></div>
+    <section id="products" class="products container">
+      <h2>Nos Produits</h2>
+      <div class="product-grid" id="product-list">
+        <!-- Les produits seront injectés par JS -->
+      </div>
+    </section>
   </main>
 
-  <!-- PANIER -->
   <aside id="cart-panel" class="cart-panel hidden">
-    <div class="cart-header">
-      <h3>Ton panier</h3>
-      <button class="close-x" id="close-cart">×</button>
-    </div>
-    <ul id="cart-items" class="cart-items"></ul>
+    <h3>Ton Panier</h3>
+    <button id="close-cart">×</button>
+    <div id="cart-items"></div>
     <div class="cart-summary">
-      <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
-      <div>TVA (2%): <strong id="tax"
+      <p>Sous-total: <span id="subtotal">0 €</span></p>
+      <p>TVA (2%): <span id="tax">0 €</span></p>
+      <p>Total: <span id="total">0 €</span></p>
+      <button id="checkout-btn">Valider le panier</button>
+    </div>
+  </aside>
 
+  <!-- Modal Connexion/Inscription -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="close-auth">×</button>
+      <div id="login-form">
+        <h3>Connexion</h3>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Mot de passe">
+        <button id="login-btn">Se connecter</button>
+        <p>Pas encore inscrit ? <span id="to-register">Créer un compte</span></p>
+      </div>
+      <div id="register-form" class="hidden">
+        <h3>Créer un compte</h3>
+        <input type="text" id="reg-name" placeholder="Nom complet">
+        <input type="email" id="reg-email" placeholder="Email">
+        <input type="password" id="reg-password" placeholder="Mot de passe">
+        <button id="register-btn">S'inscrire</button>
+        <p>Déjà inscrit ? <span id="to-login">Se connecter</span></p>
+      </div>
+    </div>
+  </div>
 
+  <footer>
+    <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
