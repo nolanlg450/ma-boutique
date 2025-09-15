@@ -264,5 +264,10 @@ function renderPayPalButton(total){
     }
   }).render('#paypal-button-container');
 }
+// Redirection vers checkout
+document.getElementById("go-checkout").addEventListener("click", () => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  window.location.href = "checkout.html";
+});
 
 
