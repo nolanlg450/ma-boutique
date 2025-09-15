@@ -5,50 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NovaShop — Checkout</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- PayPal SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
-
-  <!-- Header -->
   <header>
-    <div class="container header">
-      <h1>NovaShop</h1>
-    </div>
+    <h1 class="logo">NovaShop</h1>
   </header>
 
-  <main class="container">
-    <h2>Finaliser ma commande</h2>
-
-    <!-- Formulaire Adresse -->
-    <form id="checkout-form">
-      <label>Nom et Prénom</label>
-      <input type="text" id="fullname" required>
-      <label>Adresse</label>
-      <input type="text" id="address" required>
-      <label>Ville</label>
-      <input type="text" id="city" required>
-      <label>Code Postal</label>
-      <input type="text" id="zipcode" required>
-      <label>Pays</label>
-      <input type="text" id="country" required>
-      <label>Email</label>
-      <input type="email" id="email" required>
-    </form>
-
-    <!-- Résumé de la commande -->
-    <h3>Résumé de la commande</h3>
-    <div id="order-summary" class="order-summary"></div>
-
-    <!-- PayPal Button -->
-    <div id="paypal-button-container" style="margin-top:15px;"></div>
+  <main>
+    <section class="checkout container">
+      <h2>Informations de livraison</h2>
+      <input type="text" id="name" placeholder="Nom complet">
+      <input type="text" id="address" placeholder="Adresse">
+      <input type="text" id="city" placeholder="Ville">
+      <input type="text" id="zip" placeholder="Code postal">
+      <button id="pay-btn">Payer</button>
+    </section>
   </main>
-
-  <footer>
-    <div class="container footer">
-      <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
-    </div>
-  </footer>
 
   <script src="checkout.js"></script>
 </body>
