@@ -35,7 +35,9 @@ document.getElementById("close-cart").addEventListener("click",()=>{
   document.getElementById("cart").classList.add("hidden");
 });
 
-updateCartUI();
+function scrollToProducts(){
+  document.getElementById("products").scrollIntoView({behavior:"
+
 
 function scrollToProducts(){
   document.getElementById("products").scrollIntoView({behavior:"smooth"});
