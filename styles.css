@@ -6,7 +6,7 @@ h1,h2,h3 {color:#1a73e8;}
 /* ---- Header ---- */
 header {background:#1a73e8; color:#fff; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; border-radius:0 0 10px 10px;}
 header h1 {font-size:24px;}
-header .btn {margin-left:10px; padding:7px 12px; cursor:pointer; border:none; border-radius:5px; transition:0.3s;}
+header .btn {margin-left:10px; padding:7px 12px; cursor:pointer; border:none; border-radius:5px; transition:0.3s; background:#fff; color:#1a73e8;}
 header .btn:hover {background:#1558b0; color:#fff;}
 
 /* ---- Hero ---- */
@@ -14,7 +14,8 @@ header .btn:hover {background:#1558b0; color:#fff;}
 .hero-text {max-width:600px; margin-bottom:10px;}
 .hero-text button {margin-top:10px; padding:10px 15px; cursor:pointer; border:none; border-radius:5px; background:#1a73e8; color:#fff; transition:0.3s;}
 .hero-text button:hover {background:#1558b0;}
-.hero-image img {width:250px; border-radius:10px;}
+.hero-image img {width:250px; border-radius:10px; transition:0.3s;}
+.hero-image img:hover {transform:scale(1.05);}
 
 /* ---- Produits ---- */
 .product-grid {display:flex; gap:20px; flex-wrap:wrap; justify-content:center;}
@@ -26,15 +27,16 @@ header .btn:hover {background:#1558b0; color:#fff;}
 .product-card button:hover {background:#1558b0;}
 
 /* ---- Panier ---- */
-.cart-panel {position:fixed; top:60px; right:20px; background:#fff; padding:15px; border-radius:10px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.cart-panel {position:fixed; top:60px; right:20px; background:#fff; padding:15px; border-radius:10px; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:100;}
 .cart-panel.hidden {display:none;}
 .cart-panel button {width:100%; padding:10px; margin-top:10px; cursor:pointer; border:none; border-radius:5px; transition:0.3s;}
 .btn-close {background:red; color:#fff;}
 
-/* ---- Formulaire Checkout ---- */
-form {background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:20px;}
-form label {display:block; margin:10px 0 5px; font-weight:bold;}
-form input {width:100%; padding:10px; border-radius:5px; border:1px solid #ccc; margin-bottom:15px; transition:0.3s;}
-form input:focus {border-color:#1a73e8; outline:none;}
+/* ---- Modal Auth ---- */
+.modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:200;}
+.modal.hidden {display:none;}
+.modal-content {background:#fff; padding:20px; border-radius:10px; width:300px; position:relative;}
+.close-x {position:absolute; top:10px; right:10px; cursor:pointer; font-size:18px; font-weight:bold;}
 
-
+/* ---- Footer ---- */
+footer {background:#1a73e8; color:#fff; padding:15px 0; text-align:center; margin-top:20px; border-radius:10px 10px 0 0;}
