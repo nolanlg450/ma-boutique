@@ -1,56 +1,132 @@
-:root{
-  --accent: #0a74c2;
-  --accent-2:#6a5acd;
-  --bg: #f6f8fb;
-  --card:#ffffff;
-  --muted:#6b7280;
-}
+// script.js — robust add-to-cart with event delegation
+document.addEventListener("DOMContentLoaded", () => {
+  // Data produits
+  const PRODUCTS = [
+    { id: "ap4", name: "AirPods 4", price: 50.00, image: "images/airpods4.jpg" },
+    { id: "appro2", name: "AirPods Pro 2", price: 55.00, image: "images/airpodspro2.jpg" }
+  ];
 
-*{box-sizing:border-box}
-body{font-family:Inter, "Segoe UI", Arial, sans-serif; margin:0; background:var(--bg); color:#17202a;}
-.container{max-width:1100px;margin:0 auto;padding:0 18px}
+  // Selecteurs
+  const productGrid = document.getElementById("product-grid");
+  const cartPanel = document.getElementById("cart-panel");
+  const openCartBtn = document.getElementById("open-cart");
+  const closeCartBtn = document.getElementById("close-cart");
+  const cartItemsEl = document.getElementById("cart-items");
+  const subtotalEl = document.getElementById("subtotal");
+  const taxEl = document.getElementById("tax");
+  const totalEl = document.getElementById("total");
+  const cartCountEl = document.getElementById("cart-count");
+  const checkoutBtn = document.getElementById("checkout-btn");
+  const toast = document.getElementById("toast");
 
-/* header */
-.site-header{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; padding:14px 0; position:sticky; top:0; z-index:50}
-.header-inner{display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:700;font-size:20px;color:#fff;text-decoration:none}
-.header-right .btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+  // State
+  let cart = JSON.parse(localStorage.getItem("ns_cart") || "[]");
 
-/* hero */
-.hero{padding:36px 0}
-.hero-text h1{font-size:34px;margin:0 0 8px}
-.lead{color:var(--muted);margin-bottom:12px}
-.btn{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(2,6,23,0.08)}
-.btn.primary{background:#2d9cdb}
+  // Render des produits (dynamiquement)
+  function renderProducts(){
+    productGrid.innerHTML = "";
+    PRODUCTS.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>${p.name === "AirPods 4" ? "Écouteurs sans fil nouvelle génération." : "Réduction de bruit active, qualité studio."}</p>
+        <div class="price">${p.price.toFixed(2)} €</div>
+        <button class="btn add-to-cart" data-id="${p.id}">Ajouter au panier</button>
+      `;
+      productGrid.appendChild(card);
+    });
+    console.log("Produits affichés :", PRODUCTS.length);
+  }
 
-/* product grid */
-.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:18px 0}
-.product-card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 22px rgba(12,20,40,0.06);text-align:center;transition:transform .18s}
-.product-card:hover{transform:translateY(-6px)}
-.product-card img{width:140px;height:140px;object-fit:cover;border-radius:12px;margin-bottom:10px}
-.product-card h3{margin:6px 0;font-size:18px}
-.product-card p{color:var(--muted);margin:6px 0}
-.product-card .price{font-weight:700;color:var(--accent);margin:8px 0}
+  // Util : sauvegarder et charger
+  function saveCart(){ localStorage.setItem("ns_cart", JSON.stringify(cart)); }
+  function loadCart(){ cart = JSON.parse(localStorage.getItem("ns_cart") || "[]"); }
 
-/* cart */
-.cart-panel{position:fixed;right:20px;top:90px;width:320px;background:var(--card);padding:14px;border-radius:12px;box-shadow:0 30px 80px rgba(2,6,23,0.12);z-index:120}
-.cart-panel.hidden{display:none}
-.cart-header{display:flex;justify-content:space-between;align-items:center}
-.close-x{background:transparent;border:0;font-size:20px;cursor:pointer}
-.cart-items{list-style:none;padding:0;margin:12px 0;max-height:260px;overflow:auto}
-.cart-items li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
-.cart-summary{margin-top:8px;text-align:right}
+  // Ajouter au panier par id
+  function addToCartById(id){
+    const prod = PRODUCTS.find(p => p.id === id);
+    if(!prod){ console.warn("Produit introuvable:", id); return; }
+    const entry = cart.find(c => c.id === id);
+    if(entry) entry.qty++;
+    else cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
+    saveCart();
+    updateCartUI();
+    showToast(`${prod.name} ajouté au panier`);
+  }
 
-/* toast */
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:#111;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;transition:opacity .25s}
-.toast.hidden{display:none;opacity:0}
+  // Supprimer item (par index)
+  function removeFromCart(index){
+    if(index < 0 || index >= cart.length) return;
+    cart.splice(index, 1);
+    saveCart();
+    updateCartUI();
+  }
 
-/* footer */
-.site-footer{margin-top:40px;padding:18px 0;text-align:center;color:var(--muted)}
+  // Update UI du panier
+  function updateCartUI(){
+    cartItemsEl.innerHTML = "";
+    let subtotal = 0;
+    cart.forEach((c, i) => {
+      subtotal += c.price * c.qty;
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${c.name} × ${c.qty}</span><span>${(c.price*c.qty).toFixed(2)} € <button class="remove-item" data-index="${i}">Suppr</button></span>`;
+      cartItemsEl.appendChild(li);
+    });
+    const taxRate = 0.02;
+    const tax = Math.round(subtotal * taxRate * 100) / 100;
+    const total = Math.round((subtotal + tax) * 100) / 100;
+    subtotalEl.textContent = subtotal.toFixed(2) + " €";
+    taxEl.textContent = tax.toFixed(2) + " €";
+    totalEl.textContent = total.toFixed(2) + " €";
+    cartCountEl.textContent = cart.reduce((s, it) => s + it.qty, 0);
+  }
 
-/* responsive */
-@media(max-width:720px){
-  .product-card img{width:120px;height:120px}
-  .cart-panel{left:10px;right:10px;width:auto;top:70px}
-}
+  // Toast simple
+  function showToast(msg, ms = 1400){
+    toast.textContent = msg;
+    toast.classList.remove("hidden");
+    toast.style.opacity = "1";
+    setTimeout(()=> {
+      toast.style.opacity = "0";
+      setTimeout(()=> toast.classList.add("hidden"), 300);
+    }, ms);
+  }
+
+  // Event delegation : ajouter au panier
+  productGrid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".add-to-cart");
+    if(!btn) return;
+    const id = btn.dataset.id;
+    addToCartById(id);
+  });
+
+  // Event delegation : supprimer item dans le panier
+  cartItemsEl.addEventListener("click", (e) => {
+    const rem = e.target.closest(".remove-item");
+    if(!rem) return;
+    const idx = parseInt(rem.dataset.index, 10);
+    removeFromCart(idx);
+  });
+
+  // Open / close cart
+  openCartBtn.addEventListener("click", () => cartPanel.classList.toggle("hidden"));
+  if(closeCartBtn) closeCartBtn.addEventListener("click", () => cartPanel.classList.add("hidden"));
+
+  // Checkout redirection
+  checkoutBtn.addEventListener("click", () => {
+    // Save cart under ns_cart key (already saved) — redirect
+    window.location.href = "checkout.html";
+  });
+
+  // Init
+  renderProducts();
+  loadCart();
+  updateCartUI();
+
+  // Expose for debugging
+  window._ns = { addToCartById, cart, PRODUCTS };
+
+  console.log("script.js chargé — event delegation active");
+});
