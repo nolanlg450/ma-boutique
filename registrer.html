@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaShop — Inscription</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="container header-container">
+    <h1 class="logo">NovaShop</h1>
+    <div class="header-right">
+      <a href="login.html" class="btn">Se connecter</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="auth container">
+    <h2>Créer un compte</h2>
+    <form id="register-form">
+      <div class="form-group">
+        <label for="reg-name">Nom complet</label>
+        <input type="text" id="reg-name" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Mot de passe</label>
+        <input type="password" id="reg-password" required>
+      </div>
+      <button type="submit" class="btn">S'inscrire</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© NovaShop — Prototype</p>
+</footer>
+
+<script>
+const registerForm = document.getElementById("register-form");
+
+registerForm.addEventListener("submit", e=>{
+  e.preventDefault();
+  const name = document.getElementById("reg-name").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const password = document.getElementById("reg-password").value;
+
+  if(!name || !email || !password){
+    alert("Veuillez remplir tous les champs !");
+    return;
+  }
+
+  // Récupérer les utilisateurs existants
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const exist = users.find(u=>u.email===email);
+  if(exist){
+    alert("Cet email est déjà inscrit !");
+    return;
+  }
+
+  users.push({name,email,password});
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+  window.location.href = "login.html";
+});
+</script>
+</body>
+</html>
