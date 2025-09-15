@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NovaShop — AirPods</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- PayPal SDK: remplace TON_CLIENT_ID par ton Client ID -->
+  <!-- PayPal SDK: remplace TON_CLIENT_ID par ton Client ID si tu veux paiement direct -->
   <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
@@ -52,7 +52,9 @@
       <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
       <div>TVA (2%): <strong id="tax">0,00 €</strong></div>
       <div class="total">Total: <strong id="total">0,00 €</strong></div>
-      <div id="paypal-button-container" style="margin-top:12px;"></div>
+
+      <!-- Bouton pour rediriger vers page checkout -->
+      <button id="go-checkout" class="btn" style="margin-top:12px;">Valider ma commande</button>
     </div>
   </aside>
 
@@ -91,5 +93,17 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Redirection vers checkout -->
+  <script>
+    document.getElementById("go-checkout").addEventListener("click", () => {
+      // Sauvegarde le panier dans localStorage
+      const cart = JSON.parse(localStorage.getItem("ns_cart_guest") || "[]");
+      localStorage.setItem("cart", JSON.stringify(cart));
+      // Redirige vers checkout.html
+      window.location.href = "checkout.html";
+    });
+  </script>
+
 </body>
 </html>
