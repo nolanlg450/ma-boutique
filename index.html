@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NovaShop — AirPods</title>
-  <link rel="stylesheet" href="styles.css">
-  <meta name="theme-color" content="#121212">
-  <!-- PayPal SDK : Remplace TON_CLIENT_ID par ton vrai client ID -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaShop — AirPods</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
 <header>
@@ -15,17 +13,16 @@
     <h1 class="logo">NovaShop</h1>
     <div class="header-right">
       <button id="cart-btn">Panier (<span id="cart-count">0</span>)</button>
-      <button id="auth-btn">Connexion / Inscription</button>
+      <button id="auth-btn">Connexion</button>
     </div>
   </div>
 </header>
 
 <main>
-  <!-- Hero avec animation -->
   <section class="hero">
     <div class="hero-text">
-      <h2>Audio Premium. Écoute élégante.</h2>
-      <p>AirPods 4 & AirPods Pro 2 — qualité sonore incroyable, design élégant.</p>
+      <h2>Audio Premium. Écoute Élégante.</h2>
+      <p>AirPods 4 & AirPods Pro 2 — qualité sonore et design premium.</p>
       <button onclick="scrollToProducts()">Voir les produits</button>
     </div>
     <div class="hero-carousel" id="hero-carousel">
@@ -34,14 +31,12 @@
     </div>
   </section>
 
-  <!-- Produits avec effets hover -->
   <section id="products" class="products container">
     <h2>Nos Produits</h2>
     <div class="product-grid" id="product-list"></div>
   </section>
 </main>
 
-<!-- Panier -->
 <aside id="cart-panel" class="cart-panel hidden">
   <h3>Ton Panier</h3>
   <button id="close-cart">×</button>
@@ -50,11 +45,11 @@
     <p>Sous-total: <span id="subtotal">0 €</span></p>
     <p>TVA (2%): <span id="tax">0 €</span></p>
     <p>Total: <span id="total">0 €</span></p>
-    <div id="paypal-button-container"></div>
+    <a href="checkout.html" class="btn">Valider la commande</a>
+    <div id="paypal-button-container" style="margin-top:10px;"></div>
   </div>
 </aside>
 
-<!-- Modal Connexion/Inscription -->
 <div id="auth-modal" class="modal hidden">
   <div class="modal-content">
     <button id="close-auth">×</button>
@@ -83,4 +78,5 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
