@@ -7,58 +7,39 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#">NovaShop</a>
-      <div class="header-right">
-        <button class="btn" id="open-cart">Panier (<span id="cart-count">0</span>)</button>
-      </div>
+      <input type="text" class="search-bar" placeholder="Rechercher un produit..." />
+      <button class="btn cart-btn" id="open-cart">Panier (<span id="cart-count">0</span>)</button>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1>Audio premium. Simplicité élégante.</h1>
-          <p class="lead">AirPods 4 & AirPods Pro 2 — son limpide, ergonomie, design.</p>
-          <button class="btn" id="see-products" onclick="scrollToProducts()">Voir les produits</button>
-        </div>
-      </div>
-    </section>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Découvrez l’Audio Nouvelle Génération</h1>
+      <p>AirPods 4 & AirPods Pro 2 — Qualité supérieure, livraison rapide, prix imbattables.</p>
+      <button class="btn primary" onclick="scrollToProducts()">Voir les produits</button>
+    </div>
+  </section>
 
-    <section id="products-section" class="container">
-      <h2>Nos produits</h2>
-      <div id="product-grid" class="product-grid"><!-- produits injectés ici --></div>
-    </section>
+  <!-- PRODUITS -->
+  <main class="container">
+    <h2 class="section-title">Nos produits</h2>
+    <div id="product-grid" class="product-grid"><!-- produits injectés --></div>
   </main>
 
-  <!-- Cart panel -->
-  <aside id="cart-panel" class="cart-panel hidden" aria-hidden="true">
+  <!-- PANIER -->
+  <aside id="cart-panel" class="cart-panel hidden">
     <div class="cart-header">
       <h3>Ton panier</h3>
       <button class="close-x" id="close-cart">×</button>
     </div>
-
     <ul id="cart-items" class="cart-items"></ul>
-
     <div class="cart-summary">
       <div>Sous-total: <strong id="subtotal">0,00 €</strong></div>
-      <div>TVA (2%): <strong id="tax">0,00 €</strong></div>
-      <div class="total">Total: <strong id="total">0,00 €</strong></div>
-      <button id="checkout-btn" class="btn primary">Passer à la caisse</button>
-    </div>
-  </aside>
+      <div>TVA (2%): <strong id="tax"
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 NovaShop — Prototype</p>
-    </div>
-  </footer>
-
-  <div id="toast" class="toast hidden"></div>
-
-  <script src="script.js"></script>
-</body>
-</html>
 
