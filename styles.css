@@ -1,132 +1,215 @@
-// script.js — robust add-to-cart with event delegation
-document.addEventListener("DOMContentLoaded", () => {
-  // Data produits
-  const PRODUCTS = [
-    { id: "ap4", name: "AirPods 4", price: 50.00, image: "images/airpods4.jpg" },
-    { id: "appro2", name: "AirPods Pro 2", price: 55.00, image: "images/airpodspro2.jpg" }
-  ];
+:root {
+  --accent: #146eb4;
+  --accent-dark: #0d4d7a;
+  --bg: #f5f6f8;
+  --card: #fff;
+  --muted: #6b7280;
+  --text: #1f2937;
+}
 
-  // Selecteurs
-  const productGrid = document.getElementById("product-grid");
-  const cartPanel = document.getElementById("cart-panel");
-  const openCartBtn = document.getElementById("open-cart");
-  const closeCartBtn = document.getElementById("close-cart");
-  const cartItemsEl = document.getElementById("cart-items");
-  const subtotalEl = document.getElementById("subtotal");
-  const taxEl = document.getElementById("tax");
-  const totalEl = document.getElementById("total");
-  const cartCountEl = document.getElementById("cart-count");
-  const checkoutBtn = document.getElementById("checkout-btn");
-  const toast = document.getElementById("toast");
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
 
-  // State
-  let cart = JSON.parse(localStorage.getItem("ns_cart") || "[]");
+/* HEADER */
+.site-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 16px;
+}
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+.search-bar {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+.cart-btn {
+  background: #fff;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
 
-  // Render des produits (dynamiquement)
-  function renderProducts(){
-    productGrid.innerHTML = "";
-    PRODUCTS.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}">
-        <h3>${p.name}</h3>
-        <p>${p.name === "AirPods 4" ? "Écouteurs sans fil nouvelle génération." : "Réduction de bruit active, qualité studio."}</p>
-        <div class="price">${p.price.toFixed(2)} €</div>
-        <button class="btn add-to-cart" data-id="${p.id}">Ajouter au panier</button>
-      `;
-      productGrid.appendChild(card);
-    });
-    console.log("Produits affichés :", PRODUCTS.length);
-  }
+/* HERO */
+.hero {
+  background: linear-gradient(120deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+}
+.hero h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.hero p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover {
+  background: var(--accent-dark);
+}
+.btn.primary {
+  background: #ff9900;
+  color: #111;
+  font-weight: bold;
+}
+.btn.primary:hover {
+  background: #e68a00;
+}
 
-  // Util : sauvegarder et charger
-  function saveCart(){ localStorage.setItem("ns_cart", JSON.stringify(cart)); }
-  function loadCart(){ cart = JSON.parse(localStorage.getItem("ns_cart") || "[]"); }
+/* PRODUITS */
+.section-title {
+  text-align: center;
+  margin: 40px 0 20px;
+  font-size: 28px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 0 20px 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+.product-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+}
+.product-card img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+.product-card h3 {
+  margin: 8px 0;
+  font-size: 20px;
+}
+.product-card p {
+  color: var(--muted);
+  font-size: 14px;
+}
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent);
+  margin: 10px 0;
+}
 
-  // Ajouter au panier par id
-  function addToCartById(id){
-    const prod = PRODUCTS.find(p => p.id === id);
-    if(!prod){ console.warn("Produit introuvable:", id); return; }
-    const entry = cart.find(c => c.id === id);
-    if(entry) entry.qty++;
-    else cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
-    saveCart();
-    updateCartUI();
-    showToast(`${prod.name} ajouté au panier`);
-  }
+/* PANIER */
+.cart-panel {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  width: 340px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 200;
+}
+.cart-panel.hidden {
+  display: none;
+}
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.close-x {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.cart-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.cart-items li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.cart-summary {
+  text-align: right;
+  margin-top: 12px;
+}
 
-  // Supprimer item (par index)
-  function removeFromCart(index){
-    if(index < 0 || index >= cart.length) return;
-    cart.splice(index, 1);
-    saveCart();
-    updateCartUI();
-  }
+/* FOOTER */
+.site-footer {
+  background: #111;
+  color: #bbb;
+  padding: 30px 20px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-inner h4 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+.footer-inner ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-inner li {
+  margin-bottom: 6px;
+}
+.footer-inner a {
+  color: #bbb;
+  text-decoration: none;
+}
+.footer-inner a:
 
-  // Update UI du panier
-  function updateCartUI(){
-    cartItemsEl.innerHTML = "";
-    let subtotal = 0;
-    cart.forEach((c, i) => {
-      subtotal += c.price * c.qty;
-      const li = document.createElement("li");
-      li.innerHTML = `<span>${c.name} × ${c.qty}</span><span>${(c.price*c.qty).toFixed(2)} € <button class="remove-item" data-index="${i}">Suppr</button></span>`;
-      cartItemsEl.appendChild(li);
-    });
-    const taxRate = 0.02;
-    const tax = Math.round(subtotal * taxRate * 100) / 100;
-    const total = Math.round((subtotal + tax) * 100) / 100;
-    subtotalEl.textContent = subtotal.toFixed(2) + " €";
-    taxEl.textContent = tax.toFixed(2) + " €";
-    totalEl.textContent = total.toFixed(2) + " €";
-    cartCountEl.textContent = cart.reduce((s, it) => s + it.qty, 0);
-  }
-
-  // Toast simple
-  function showToast(msg, ms = 1400){
-    toast.textContent = msg;
-    toast.classList.remove("hidden");
-    toast.style.opacity = "1";
-    setTimeout(()=> {
-      toast.style.opacity = "0";
-      setTimeout(()=> toast.classList.add("hidden"), 300);
-    }, ms);
-  }
-
-  // Event delegation : ajouter au panier
-  productGrid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".add-to-cart");
-    if(!btn) return;
-    const id = btn.dataset.id;
-    addToCartById(id);
-  });
-
-  // Event delegation : supprimer item dans le panier
-  cartItemsEl.addEventListener("click", (e) => {
-    const rem = e.target.closest(".remove-item");
-    if(!rem) return;
-    const idx = parseInt(rem.dataset.index, 10);
-    removeFromCart(idx);
-  });
-
-  // Open / close cart
-  openCartBtn.addEventListener("click", () => cartPanel.classList.toggle("hidden"));
-  if(closeCartBtn) closeCartBtn.addEventListener("click", () => cartPanel.classList.add("hidden"));
-
-  // Checkout redirection
-  checkoutBtn.addEventListener("click", () => {
-    // Save cart under ns_cart key (already saved) — redirect
-    window.location.href = "checkout.html";
-  });
-
-  // Init
-  renderProducts();
-  loadCart();
-  updateCartUI();
-
-  // Expose for debugging
-  window._ns = { addToCartById, cart, PRODUCTS };
-
-  console.log("script.js chargé — event delegation active");
-});
