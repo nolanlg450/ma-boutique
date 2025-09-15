@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NovaShop — AirPods</title>
 <link rel="stylesheet" href="styles.css">
-<script src="https://www.paypal.com/sdk/js?client-id=AVNseyD2uEuxrqmJe_3Yuv1Bru7ufk9oUTyw2pDY2k18z_ftKjrCYXr1Zx8LoffN9yRVa0JXfuR_MthN&currency=EUR"></script>
 </head>
 <body>
 <header>
   <div class="container header-container">
     <h1 class="logo">NovaShop</h1>
     <div class="header-right">
+      <span id="user-greet"></span>
+      <a href="login.html" class="btn" id="login-btn">Se connecter</a>
       <button id="cart-btn">Panier (<span id="cart-count">0</span>)</button>
-      <button id="auth-btn">Connexion</button>
     </div>
   </div>
 </header>
@@ -24,10 +24,6 @@
       <h2>Audio Premium. Écoute Élégante.</h2>
       <p>AirPods 4 & AirPods Pro 2 — qualité sonore et design premium.</p>
       <button onclick="scrollToProducts()">Voir les produits</button>
-    </div>
-    <div class="hero-carousel" id="hero-carousel">
-      <img src="images/airpods4.jpg" alt="AirPods 4">
-      <img src="images/airpodspro2.jpg" alt="AirPods Pro 2">
     </div>
   </section>
 
@@ -45,34 +41,12 @@
     <p>Sous-total: <span id="subtotal">0 €</span></p>
     <p>TVA (2%): <span id="tax">0 €</span></p>
     <p>Total: <span id="total">0 €</span></p>
-    <a href="checkout.html" class="btn">Valider la commande</a>
-    <div id="paypal-button-container" style="margin-top:10px;"></div>
+    <button id="checkout-btn" class="btn">Finaliser la commande</button>
   </div>
 </aside>
 
-<div id="auth-modal" class="modal hidden">
-  <div class="modal-content">
-    <button id="close-auth">×</button>
-    <div id="login-form">
-      <h3>Connexion</h3>
-      <input type="email" id="login-email" placeholder="Email">
-      <input type="password" id="login-password" placeholder="Mot de passe">
-      <button id="login-btn">Se connecter</button>
-      <p>Pas encore inscrit ? <span id="to-register">Créer un compte</span></p>
-    </div>
-    <div id="register-form" class="hidden">
-      <h3>Créer un compte</h3>
-      <input type="text" id="reg-name" placeholder="Nom complet">
-      <input type="email" id="reg-email" placeholder="Email">
-      <input type="password" id="reg-password" placeholder="Mot de passe">
-      <button id="register-btn">S'inscrire</button>
-      <p>Déjà inscrit ? <span id="to-login">Se connecter</span></p>
-    </div>
-  </div>
-</div>
-
 <footer>
-  <p>© NovaShop — Prototype. Paiements gérés par PayPal.</p>
+  <p>© NovaShop — Prototype</p>
 </footer>
 
 <script src="script.js"></script>
