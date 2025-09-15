@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaShop — Connexion</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="container header-container">
+    <h1 class="logo">NovaShop</h1>
+    <div class="header-right">
+      <a href="register.html" class="btn">Créer un compte</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="auth container">
+    <h2>Se connecter</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" required>
+      </div>
+      <button type="submit" class="btn">Se connecter</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© NovaShop — Prototype</p>
+</footer>
+
+<script>
+const loginForm = document.getElementById("login-form");
+loginForm.addEventListener("submit", e=>{
+  e.preventDefault();
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const user = users.find(u=>u.email===email && u.password===password);
+  if(user){
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    alert(`Bienvenue ${user.name} !`);
+    window.location.href = "index.html";
+  }else{
+    alert("Email ou mot de passe incorrect !");
+  }
+});
+</script>
+</body>
+</html>
