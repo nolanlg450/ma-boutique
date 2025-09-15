@@ -142,4 +142,18 @@ function scrollToProducts() {
 renderProducts();
 updateCart();
 
+// Récupérer l'utilisateur connecté
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+// Rediriger vers login si non connecté avant checkout
+document.getElementById("checkout-btn")?.addEventListener("click", ()=>{
+  if(!currentUser){
+    alert("Vous devez être connecté pour finaliser la commande.");
+    window.location.href = "login.html";
+  }else{
+    window.location.href = "checkout.html";
+  }
+});
+
+
 
