@@ -1,3 +1,4 @@
+// ----- Panier -----
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(name, price){
@@ -23,22 +24,38 @@ function updateCartUI(){
   document.getElementById("cart-count").textContent=cart.reduce((a,b)=>a+b.qty,0);
 }
 
+// Boutons panier
+document.getElementById("open-cart").addEventListener("click",()=>{document.getElementById("cart").classList.toggle("hidden");});
+document.getElementById("close-cart").addEventListener("click",()=>{document.getElementById("cart").classList.add("hidden");});
+
+// Redirection checkout
 document.getElementById("go-checkout").addEventListener("click",()=>{
   localStorage.setItem("cart", JSON.stringify(cart));
   window.location.href="checkout.html";
 });
 
-document.getElementById("open-cart").addEventListener("click",()=>{
-  document.getElementById("cart").classList.toggle("hidden");
-});
-document.getElementById("close-cart").addEventListener("click",()=>{
-  document.getElementById("cart").classList.add("hidden");
-});
-
-function scrollToProducts(){
-  document.getElementById("products").scrollIntoView({behavior:"
-
-
+// ----- Scroll produits -----
 function scrollToProducts(){
   document.getElementById("products").scrollIntoView({behavior:"smooth"});
 }
+
+// ----- Auth Modal -----
+const authModal = document.getElementById("auth-modal");
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
+
+document.getElementById("login-btn").addEventListener("click",()=>{authModal.classList.remove("hidden"); loginForm.classList.remove("hidden"); registerForm.classList.add("hidden");});
+document.getElementById("signup-btn").addEventListener("click",()=>{authModal.classList.remove("hidden"); loginForm.classList.add("hidden"); registerForm.classList.remove("hidden");});
+document.getElementById("auth-close").addEventListener("click",()=>{authModal.classList.add("hidden");});
+
+// Switch forms
+document.getElementById("switch-to-register").addEventListener("click",()=>{
+  loginForm.classList.add("hidden");
+  registerForm.classList.remove("hidden");
+});
+document.getElementById("switch-to-login").addEventListener("click",()=>{
+  loginForm.classList.remove("hidden");
+  registerForm.classList.add("hidden");
+});
+
+updateCartUI();
